@@ -29,7 +29,24 @@ function dinhkore_load_widgets($widgets_manager)
 // Ý nghĩa: "Ê Elementor, khi nào mày load xong widget, thì chạy giùm tao cái hàm dinhkore_load_widgets nha"
 add_action('elementor/widgets/register', 'dinhkore_load_widgets');
 
-/**
- * HẾT. Đơn giản vậy thôi!
- * Không cần kiểm tra phiên bản PHP, không cần Class Singleton phức tạp.
- */
+function dinhkore_enqueue_assets()
+{
+    //load CSS file
+    wp_enqueue_style(
+        'dinhkore-plugin-styles',
+        plugin_dir_url(__FILE__) . 'assets/css/dinhkore-styles.css',
+        [],
+        '1.0.0'
+    );
+
+    //load JS file
+    wp_enqueue_script(
+        'dinhkore-plugin-scripts',
+        plugin_dir_url(__FILE__) . 'assets/js/dinhkore-scripts.js',
+        ['jquery'], //load sau jQuery
+        '1.0.0',
+        true    //load ở chân trang (foooter)
+    );
+}
+
+add_action('wp_enqueue_scripts', 'dinhkore_enqueue_assets');
