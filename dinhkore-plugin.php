@@ -6,47 +6,42 @@
  * Author: DinhKore
  */
 
-// 1. Chặn truy cập trực tiếp (Cái này luôn cần)
+//Chặn truy cập trực tiếp
 if (!defined('ABSPATH')) {
     exit;
 }
 
-// 2. Hàm này sẽ chạy khi Elementor sẵn sàng
+//Hàm input Widget (Chạy khi Elementor sẵn sàng)
 function dinhkore_load_widgets($widgets_manager)
 {
-
-    // BƯỚC A: Tìm và nạp file widget vào
-    // Bạn nhớ kiểm tra đúng đường dẫn file nhé
+    //Ipnut file widget
+    // __DIR__ trỏ đúng vào thư mục dinhkore-plugin hiện tại
     require_once __DIR__ . '/includes/widgets/hello-widget.php';
 
-    // BƯỚC B: Đăng ký nó
-    // Lưu ý: Namespace và Class phải khớp y hệt trong file hello-widget.php
-    $widgets_manager->register(new \ElementorPro\Modules\DinhKoreWidget\DinhKore_Hello_Widget());
-
+    //Đăng ký Widget
+    $widgets_manager->register(new \DinhKore\Plugin\Widgets\DinhKore_Hello_Widget());
 }
-
-// 3. Móc hàm trên vào sự kiện của Elementor
-// Ý nghĩa: "Ê Elementor, khi nào mày load xong widget, thì chạy giùm tao cái hàm dinhkore_load_widgets nha"
 add_action('elementor/widgets/register', 'dinhkore_load_widgets');
 
+
+//Hàm nạp CSS và JS
 function dinhkore_enqueue_assets()
 {
-    //load CSS file
+    // Load file style.css
     wp_enqueue_style(
-        'dinhkore-plugin-styles',
-        plugin_dir_url(__FILE__) . 'assets/css/dinhkore-styles.css',
+        'dinhkore-style', // ID
+        plugin_dir_url(__FILE__) . 'assets/css/style.css', // Đường dẫn file
         [],
         '1.0.0'
     );
 
-    //load JS file
+    // Load file main.js
     wp_enqueue_script(
-        'dinhkore-plugin-scripts',
-        plugin_dir_url(__FILE__) . 'assets/js/dinhkore-scripts.js',
-        ['jquery'], //load sau jQuery
+        'dinhkore-script', // ID
+        plugin_dir_url(__FILE__) . 'assets/js/main.js', // Đường dẫn file
+        ['jquery'], // Load sau jQuery
         '1.0.0',
-        true    //load ở chân trang (foooter)
+        true // Load ở footer
     );
 }
-
 add_action('wp_enqueue_scripts', 'dinhkore_enqueue_assets');
